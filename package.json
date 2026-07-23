@@ -9,12 +9,17 @@
     "e2e"
   ],
   "scripts": {
+    "build": "npm run build -w @ancora/core && npm run build -w @ancora/react",
     "test": "npm run test -w @ancora/core",
     "typecheck": "tsc -b packages/core packages/react apps/playground",
     "dev": "npm run dev -w playground",
-    "e2e": "npm run e2e -w ancora-e2e"
+    "e2e": "npm run e2e -w ancora-e2e",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "npm run build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.0",
     "typescript": "^5.7.0"
   }
 }

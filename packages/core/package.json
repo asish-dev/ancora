@@ -1,16 +1,63 @@
 {
   "name": "@ancora/core",
   "version": "0.1.0",
-  "private": true,
+  "description": "Framework-agnostic core for ancora: pin state machine, scroll-source discrimination, anchor math, and list-operation inference for pixel-stable chat/streaming lists.",
+  "license": "MIT",
+  "author": "Asish Samanta",
   "type": "module",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
   "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "virtualization",
+    "virtual-list",
+    "chat",
+    "streaming",
+    "scroll",
+    "stick-to-bottom",
+    "pin",
+    "anchor",
+    "headless"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asish-dev/ancora.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/asish-dev/ancora/tree/main/packages/core#readme",
+  "bugs": "https://github.com/asish-dev/ancora/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "devDependencies": {
     "fast-check": "^3.23.0",
+    "tsup": "^8.3.0",
     "typescript": "^5.7.0",
     "vitest": "^2.1.0"
   }
