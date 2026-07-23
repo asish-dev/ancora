@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# The pin/prepend gates are behavioral guarantees, not smoke tests — a red
+# gate means the library regressed the property it exists to hold. Both jobs
+# are required; neither is allowed to be soft.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit:
+    name: types + core (node)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: typecheck (core + react + playground)
+        run: npm run typecheck
+      - name: core unit + property tests
+        run: npm test
+
+  e2e:
+    name: gates on ${{ matrix.engine }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit, firefox]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: install ${{ matrix.engine }} + system deps
+        run: npx playwright install --with-deps ${{ matrix.engine }}
+        working-directory: e2e
+      - name: pin + prepend + torture gates
+        run: npx playwright test --project=${{ matrix.engine }}
+        working-directory: e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.engine }}
+          path: e2e/playwright-report/
+          retention-days: 7
