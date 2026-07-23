@@ -13,6 +13,10 @@
     "skipLibCheck": true,
     "declaration": true,
     "composite": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "@ancora/core": ["./packages/core/src/index.ts"],
+      "@ancora/react": ["./packages/react/src/index.ts"]
+    }
   }
 }
