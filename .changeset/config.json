@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["playground", "ancora-e2e", "ancora-monorepo"]
+  "ignore": ["playground", "ancora-e2e"]
 }
